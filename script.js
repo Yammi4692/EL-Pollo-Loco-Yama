@@ -10,7 +10,7 @@ function init() {
   bg = new Background('img/img/5_background/first_half_background.png');
   player = new Player(
     'img/img/2_character_pepe/1_idle/idle/I-1.png',
-    40, 260, 120, 160
+    40, 210, 160, 210
   );
 
   bg.img.onload = () => {
