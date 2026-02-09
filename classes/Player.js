@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 class Player {
-=======
-﻿class Player {
->>>>>>> ea31844 (add jump)
   constructor(src, x, y, w, h) {
     this.img = new Image();
     this.img.src = src;
