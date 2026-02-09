@@ -6,6 +6,11 @@ class Player {
     this.y = y;
     this.w = w;
     this.h = h;
+    this.speed = 3;
+  }
+
+  moveRight() {
+    this.x += this.speed;
   }
 
   draw(ctx) {

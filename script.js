@@ -2,6 +2,7 @@
 let ctx;
 let bg;
 let player;
+let right = false;
 
 function init() {
   canvas = document.getElementById('game');
@@ -13,14 +14,38 @@ function init() {
     40, 210, 160, 210
   );
 
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'ArrowRight') right = true;
+  });
+
+  window.addEventListener('keyup', (e) => {
+    if (e.code === 'ArrowRight') right = false;
+  });
+
   bg.img.onload = () => {
-    draw();
+    bgReady = true;
+    if (playerReady) gameLoop();
   };
+
+  player.img.onload = () => {
+    playerReady = true;
+    if (bgReady) gameLoop();
+  };
+}
+
+function update() {
+  if (right) player.moveRight();
 }
 
 function draw() {
   bg.draw(ctx, canvas);
   player.draw(ctx);
+}
+
+function gameLoop() {
+  update();
+  draw();
+  requestAnimationFrame(gameLoop);
 }
 
 init();
