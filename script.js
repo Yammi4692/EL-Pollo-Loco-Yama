@@ -4,7 +4,7 @@ let bg;
 let player;
 let right = false;
 let left = false;
-
+let jump = false;
 
 function init() {
   canvas = document.getElementById('game');
@@ -27,11 +27,13 @@ function init() {
   window.addEventListener('keydown', (e) => {
     if (e.code === 'ArrowRight') right = true;
     if (e.code === 'ArrowLeft') left = true;
+    if (e.code === 'Space') jump = true;
   });
 
   window.addEventListener('keyup', (e) => {
     if (e.code === 'ArrowRight') right = false;
     if (e.code === 'ArrowLeft') left = false;
+    if (e.code === 'Space') jump = false;
   });
 
   bg.img.onload = () => {
@@ -49,6 +51,8 @@ function update() {
   if (right) player.moveRight();
   if (left) player.moveLeft();
   if (!left && !right) player.stopWalk();
+  if (jump) player.jump();
+  player.updateJump();
 }
 
 function draw() {

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 class Player {
+=======
+﻿class Player {
+>>>>>>> ea31844 (add jump)
   constructor(src, x, y, w, h) {
     this.img = new Image();
     this.img.src = src;
@@ -8,6 +12,11 @@ class Player {
     this.w = w;
     this.h = h;
     this.speed = 3;
+
+    this.vy = 0;
+    this.gravity = 0.5;
+    this.ground = y;
+    this.jumping = false;
 
     this.walkFrames = [];
     this.walkImages = [];
