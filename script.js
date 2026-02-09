@@ -3,6 +3,8 @@ let ctx;
 let bg;
 let player;
 let right = false;
+let left = false;
+
 
 function init() {
   canvas = document.getElementById('game');
@@ -16,10 +18,12 @@ function init() {
 
   window.addEventListener('keydown', (e) => {
     if (e.code === 'ArrowRight') right = true;
+    if (e.code === 'ArrowLeft') left = true;
   });
 
   window.addEventListener('keyup', (e) => {
     if (e.code === 'ArrowRight') right = false;
+    if (e.code === 'ArrowLeft') left = false;
   });
 
   bg.img.onload = () => {
@@ -35,6 +39,7 @@ function init() {
 
 function update() {
   if (right) player.moveRight();
+  if (left) player.moveLeft();
 }
 
 function draw() {
