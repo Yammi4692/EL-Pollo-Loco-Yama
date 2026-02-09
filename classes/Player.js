@@ -14,6 +14,7 @@ class Player {
     this.walkIndex = 0;
     this.walkTimer = 0;
     this.isWalking = false;
+    this.facing = 'right';
   }
 
   setWalkFrames(frames) {
@@ -29,10 +30,18 @@ class Player {
   moveRight() {
     this.x += this.speed;
     this.isWalking = true;
+    this.facing = 'right';
     this.animateWalk();
   }
 
   draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+    if (this.facing === 'left') {
+      ctx.save();
+      ctx.scale(-1, 1);
+      ctx.drawImage(this.img, -this.x - this.w, this.y, this.w, this.h);
+      ctx.restore();
+    } else {
+      ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+    }
   }
 }
