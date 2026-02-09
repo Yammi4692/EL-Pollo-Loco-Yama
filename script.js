@@ -15,6 +15,14 @@ function init() {
     'img/img/2_character_pepe/1_idle/idle/I-1.png',
     40, 210, 160, 210
   );
+  player.setWalkFrames([
+    'img/img/2_character_pepe/2_walk/W-21.png',
+    'img/img/2_character_pepe/2_walk/W-22.png',
+    'img/img/2_character_pepe/2_walk/W-23.png',
+    'img/img/2_character_pepe/2_walk/W-24.png',
+    'img/img/2_character_pepe/2_walk/W-25.png',
+    'img/img/2_character_pepe/2_walk/W-26.png'
+  ]);
 
   window.addEventListener('keydown', (e) => {
     if (e.code === 'ArrowRight') right = true;
@@ -40,6 +48,7 @@ function init() {
 function update() {
   if (right) player.moveRight();
   if (left) player.moveLeft();
+  if (!left && !right) player.stopWalk();
 }
 
 function draw() {
