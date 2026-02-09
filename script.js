@@ -23,6 +23,25 @@ function init() {
     'img/img/2_character_pepe/2_walk/W-25.png',
     'img/img/2_character_pepe/2_walk/W-26.png'
   ]);
+  player.setJumpFrames([
+    'img/img/2_character_pepe/3_jump/J-31.png',
+    'img/img/2_character_pepe/3_jump/J-32.png',
+    'img/img/2_character_pepe/3_jump/J-33.png',
+    'img/img/2_character_pepe/3_jump/J-34.png',
+    'img/img/2_character_pepe/3_jump/J-35.png',
+    'img/img/2_character_pepe/3_jump/J-36.png',
+    'img/img/2_character_pepe/3_jump/J-37.png',
+    'img/img/2_character_pepe/3_jump/J-38.png',
+    'img/img/2_character_pepe/3_jump/J-39.png'
+  ]);
+  player.setSleepFrames([
+    'img/img/2_character_pepe/1_idle/long_idle/I-11.png',
+    'img/img/2_character_pepe/1_idle/long_idle/I-12.png',
+    'img/img/2_character_pepe/1_idle/long_idle/I-13.png',
+    'img/img/2_character_pepe/1_idle/long_idle/I-14.png',
+    'img/img/2_character_pepe/1_idle/long_idle/I-15.png',
+    'img/img/2_character_pepe/1_idle/long_idle/I-16.png'
+  ]);
 
   window.addEventListener('keydown', (e) => {
     if (e.code === 'ArrowRight') right = true;
@@ -38,21 +57,25 @@ function init() {
 
   bg.img.onload = () => {
     bgReady = true;
-    if (playerReady) gameLoop();
+    waitUntilReady();
   };
+}
 
-  player.img.onload = () => {
-    playerReady = true;
-    if (bgReady) gameLoop();
-  };
+function waitUntilReady() {
+  if (!bgReady || !player.ready) {
+    requestAnimationFrame(waitUntilReady);
+    return;
+  }
+  gameLoop();
 }
 
 function update() {
   if (right) player.moveRight();
   if (left) player.moveLeft();
-  if (!left && !right) player.stopWalk();
+  if (!left && !right && !player.jumping) player.stopWalk();
   if (jump) player.jump();
   player.updateJump();
+  player.updateIdle(left || right || player.jumping);
 }
 
 function draw() {
