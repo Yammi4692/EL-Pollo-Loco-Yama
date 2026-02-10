@@ -7,7 +7,7 @@ class Coin extends MovableObject {
    * @param {number} y
    */
   constructor(x, y) {
-    super('img/img/8_coin/coin_1.png', x, y, 40, 40);
+    super('img/img/8_coin/coin_1.png', x, y, 90, 90);
     this.frames = [
       'img/img/8_coin/coin_1.png',
       'img/img/8_coin/coin_2.png'
