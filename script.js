@@ -39,6 +39,11 @@ function init() {
     'img/img/2_character_pepe/3_jump/J-38.png',
     'img/img/2_character_pepe/3_jump/J-39.png'
   ]);
+  player.setHurtFrames([
+    'img/img/2_character_pepe/4_hurt/H-41.png',
+    'img/img/2_character_pepe/4_hurt/H-42.png',
+    'img/img/2_character_pepe/4_hurt/H-43.png'
+  ]);
   player.setSleepFrames([
     'img/img/2_character_pepe/1_idle/long_idle/I-11.png',
     'img/img/2_character_pepe/1_idle/long_idle/I-12.png',
@@ -79,6 +84,38 @@ function waitUntilReady() {
 }
 
 /**
+ * simple box collision
+ * @param {object} a
+ * @param {object} b
+ * @returns {boolean}
+ */
+function isColliding(a, b) {
+  return (
+    a.x < b.x + b.w &&
+    a.x + a.w > b.x &&
+    a.y < b.y + b.h &&
+    a.y + a.h > b.y
+  );
+}
+
+/**
+ * check if player hits from above
+ * @returns {boolean}
+ */
+function isJumpHit() {
+  return false;
+}
+
+/**
+ * handle player vs chicken
+ */
+function handleChickenHit() {
+  if (!isColliding(player, chicken)) return;
+
+  player.hurt();
+}
+
+/**
  * update every frame
  */
 function update() {
@@ -87,8 +124,10 @@ function update() {
   if (!left && !right && !player.jumping) player.stopWalk();
   if (jump) player.jump();
   player.updateJump();
+  player.updateHurt();
   player.updateIdle(left || right || player.jumping);
   chicken.moveLeft();
+  handleChickenHit();
 }
 
 /**
