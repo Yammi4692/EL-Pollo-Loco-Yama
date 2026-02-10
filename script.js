@@ -5,6 +5,8 @@ let player;
 let right = false;
 let left = false;
 let jump = false;
+let chicken;
+
 
 function init() {
   canvas = document.getElementById('game');
@@ -42,6 +44,7 @@ function init() {
     'img/img/2_character_pepe/1_idle/long_idle/I-15.png',
     'img/img/2_character_pepe/1_idle/long_idle/I-16.png'
   ]);
+  chicken = new SmallChicken(520, 360);
 
   window.addEventListener('keydown', (e) => {
     if (e.code === 'ArrowRight') right = true;
@@ -81,6 +84,7 @@ function update() {
 function draw() {
   bg.draw(ctx, canvas);
   player.draw(ctx);
+  chicken.draw(ctx);
 }
 
 function gameLoop() {

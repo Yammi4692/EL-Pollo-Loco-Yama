@@ -8,7 +8,7 @@ class SmallChicken extends MovableObject {
    */
   constructor(x, y) {
     super('img/img/3_enemies_chicken/chicken_small/1_walk/1_w.png', x, y, 60, 60);
-    this.speed = 1.2;
+    this.speed = 0;
   }
 
   /**
