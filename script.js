@@ -2,11 +2,9 @@ let canvas;
 let ctx;
 let bg;
 let player;
-let right = false;
-let left = false;
-let jump = false;
 let chickens = [];
 let bgReady = false;
+let input;
 
 /**
  * start setup
@@ -58,18 +56,7 @@ function init() {
     new SmallChicken(940, 360),
     new SmallChicken(1180, 360)
   ];
-
-  window.addEventListener('keydown', (e) => {
-    if (e.code === 'ArrowRight') right = true;
-    if (e.code === 'ArrowLeft') left = true;
-    if (e.code === 'Space') jump = true;
-  });
-
-  window.addEventListener('keyup', (e) => {
-    if (e.code === 'ArrowRight') right = false;
-    if (e.code === 'ArrowLeft') left = false;
-    if (e.code === 'Space') jump = false;
-  });
+  input = new Input();
 
   bg.img.onload = () => {
     bgReady = true;
@@ -108,13 +95,13 @@ function handleChickenHit(chicken) {
  * update every frame
  */
 function update() {
-  if (right) player.moveRight();
-  if (left) player.moveLeft();
-  if (!left && !right && !player.jumping) player.stopWalk();
-  if (jump) player.jump();
+  if (input.right) player.moveRight();
+  if (input.left) player.moveLeft();
+  if (!input.left && !input.right && !player.jumping) player.stopWalk();
+  if (input.jump) player.jump();
   player.updateJump();
   player.updateHurt();
-  player.updateIdle(left || right || player.jumping);
+  player.updateIdle(input.left || input.right || player.jumping);
   chickens.forEach((ch) => {
     ch.moveLeft();
     handleChickenHit(ch);
