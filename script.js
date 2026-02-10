@@ -1,4 +1,4 @@
-﻿let canvas;
+let canvas;
 let ctx;
 let bg;
 let player;
@@ -6,8 +6,11 @@ let right = false;
 let left = false;
 let jump = false;
 let chicken;
+let bgReady = false;
 
-
+/**
+ * start setup
+ */
 function init() {
   canvas = document.getElementById('game');
   ctx = canvas.getContext('2d');
@@ -64,6 +67,9 @@ function init() {
   };
 }
 
+/**
+ * wait until images are ready
+ */
 function waitUntilReady() {
   if (!bgReady || !player.ready) {
     requestAnimationFrame(waitUntilReady);
@@ -72,6 +78,9 @@ function waitUntilReady() {
   gameLoop();
 }
 
+/**
+ * update every frame
+ */
 function update() {
   if (right) player.moveRight();
   if (left) player.moveLeft();
@@ -79,14 +88,21 @@ function update() {
   if (jump) player.jump();
   player.updateJump();
   player.updateIdle(left || right || player.jumping);
+  chicken.moveLeft();
 }
 
+/**
+ * draw stuff
+ */
 function draw() {
   bg.draw(ctx, canvas);
   player.draw(ctx);
   chicken.draw(ctx);
 }
 
+/**
+ * loop
+ */
 function gameLoop() {
   update();
   draw();
