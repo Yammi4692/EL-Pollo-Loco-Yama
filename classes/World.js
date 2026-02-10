@@ -91,6 +91,7 @@ class World {
     this.jumpSound = new Audio('assets/audio/character_jumping.mp3');
     this.chickenDieSound = new Audio('assets/audio/dying_chicken.mp3');
     this.hurtSound = new Audio('assets/audio/pepe_hurting.mp3');
+    this.coinSound = new Audio('assets/audio/get_coin.mp3');
 
     this.bg.img.onload = () => {
       this.bgReady = true;
@@ -143,6 +144,8 @@ class World {
     if (coin.collected) return;
     if (!Collision.hitBox(this.player, coin)) return;
     coin.collect();
+    this.coinSound.currentTime = 0;
+    this.coinSound.play();
     this.coinCount += 20;
     this.coinBar.set(this.coinCount);
   }
