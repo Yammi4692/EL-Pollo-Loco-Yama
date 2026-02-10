@@ -68,6 +68,8 @@ class World {
     this.gameOver = false;
     this.gameOverImg = new Image();
     this.gameOverImg.src = 'img/img/9_intro_outro_screens/game_over/game over.png';
+    this.jumpHeld = false;
+    this.jumpSound = new Audio('assets/audio/character_jumping.mp3');
 
     this.bg.img.onload = () => {
       this.bgReady = true;
@@ -116,7 +118,12 @@ class World {
     if (this.input.right) this.player.moveRight();
     if (this.input.left) this.player.moveLeft();
     if (!this.input.left && !this.input.right && !this.player.jumping) this.player.stopWalk();
-    if (this.input.jump) this.player.jump();
+    if (this.input.jump && !this.jumpHeld) {
+      this.player.jump();
+      this.jumpSound.currentTime = 0;
+      this.jumpSound.play();
+    }
+    this.jumpHeld = this.input.jump;
     this.player.updateJump();
     this.player.updateHurt();
     this.player.updateIdle(this.input.left || this.input.right || this.player.jumping);
