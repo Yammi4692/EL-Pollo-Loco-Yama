@@ -5,7 +5,7 @@ let player;
 let right = false;
 let left = false;
 let jump = false;
-let chicken;
+let chickens = [];
 let bgReady = false;
 
 /**
@@ -52,7 +52,12 @@ function init() {
     'img/img/2_character_pepe/1_idle/long_idle/I-15.png',
     'img/img/2_character_pepe/1_idle/long_idle/I-16.png'
   ]);
-  chicken = new SmallChicken(520, 360);
+  chickens = [
+    new SmallChicken(520, 360),
+    new SmallChicken(720, 360),
+    new SmallChicken(940, 360),
+    new SmallChicken(1180, 360)
+  ];
 
   window.addEventListener('keydown', (e) => {
     if (e.code === 'ArrowRight') right = true;
@@ -102,18 +107,18 @@ function isColliding(a, b) {
  * check if player hits from above
  * @returns {boolean}
  */
-function isJumpHit() {
+function isJumpHit(chicken) {
   return player.vy > 0 && (player.y + player.h) < (chicken.y + chicken.h * 0.6);
 }
 
 /**
  * handle player vs chicken
  */
-function handleChickenHit() {
+function handleChickenHit(chicken) {
   if (chicken.dead) return;
   if (!isColliding(player, chicken)) return;
 
-  if (isJumpHit()) {
+  if (isJumpHit(chicken)) {
     chicken.die();
     player.vy = -6;
     player.jumping = true;
@@ -133,8 +138,10 @@ function update() {
   player.updateJump();
   player.updateHurt();
   player.updateIdle(left || right || player.jumping);
-  chicken.moveLeft();
-  handleChickenHit();
+  chickens.forEach((ch) => {
+    ch.moveLeft();
+    handleChickenHit(ch);
+  });
 }
 
 /**
@@ -143,7 +150,7 @@ function update() {
 function draw() {
   bg.draw(ctx, canvas);
   player.draw(ctx);
-  chicken.draw(ctx);
+  chickens.forEach((ch) => ch.draw(ctx));
 }
 
 /**
