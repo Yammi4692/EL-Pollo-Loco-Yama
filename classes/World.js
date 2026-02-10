@@ -71,6 +71,7 @@ class World {
     this.jumpHeld = false;
     this.jumpSound = new Audio('assets/audio/character_jumping.mp3');
     this.chickenDieSound = new Audio('assets/audio/dying_chicken.mp3');
+    this.hurtSound = new Audio('assets/audio/pepe_hurting.mp3');
 
     this.bg.img.onload = () => {
       this.bgReady = true;
@@ -106,6 +107,8 @@ class World {
     } else {
       if (this.player.hurtCooldown === 0) {
         this.player.hurt();
+        this.hurtSound.currentTime = 0;
+        this.hurtSound.play();
         this.health -= 20;
         this.healthBar.set(this.health);
         if (this.health <= 0) this.gameOver = true;
