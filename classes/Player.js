@@ -1,7 +1,6 @@
 class Player {
   constructor(src, x, y, w, h) {
-    this.img = new Image();
-    this.img.src = src;
+    super(src, x, y, w, h);
     this.idleImg = this.img;
     this.x = x;
     this.y = y;
@@ -50,3 +49,4 @@ class Player {
     }
   }
 }
+
