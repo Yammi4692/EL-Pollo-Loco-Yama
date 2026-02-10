@@ -11,10 +11,8 @@ class World {
     this.bgReady = false;
     this._bgReadyCount = 0;
 
-    this.air = new Background('img/img/5_background/layers/air.png');
-    this.layer1 = new Background('img/img/5_background/layers/1_first_layer/full.png');
-    this.layer2 = new Background('img/img/5_background/layers/2_second_layer/full.png');
-    this.layer3 = new Background('img/img/5_background/layers/3_third_layer/full.png');
+    this.bg1 = new Background('img/img/5_background/first_half_background.png');
+    this.bg2 = new Background('img/img/5_background/second_half_background.png');
     this.cloudLayer = new Background('img/img/5_background/layers/4_clouds/full.png');
     this.cloudX = 0;
     this.worldWidth = this.canvas.width * 2;
@@ -62,6 +60,10 @@ class World {
       new SmallChicken(940, 360),
       new SmallChicken(1180, 360)
     ];
+    this.middleChickens = [
+      new MiddleChicken(620, 330),
+      new MiddleChicken(1020, 330)
+    ];
     this.coins = [
       new Coin(300, 280),
       new Coin(520, 240),
@@ -99,10 +101,8 @@ class World {
     this.hurtSound = new Audio('assets/audio/pepe_hurting.mp3');
     this.coinSound = new Audio('assets/audio/get_coin.mp3');
 
-    this.air.img.onload = () => this._markBgReady();
-    this.layer1.img.onload = () => this._markBgReady();
-    this.layer2.img.onload = () => this._markBgReady();
-    this.layer3.img.onload = () => this._markBgReady();
+    this.bg1.img.onload = () => this._markBgReady();
+    this.bg2.img.onload = () => this._markBgReady();
     this.cloudLayer.img.onload = () => this._markBgReady();
   }
 
@@ -182,6 +182,10 @@ class World {
       ch.moveLeft();
       this.handleChickenHit(ch);
     });
+    this.middleChickens.forEach((ch) => {
+      ch.moveLeft();
+      this.handleChickenHit(ch);
+    });
     this.coins.forEach((c) => c.animate());
     this.coins.forEach((c) => this.handleCoinHit(c));
     this.cloudX -= 0.2;
@@ -193,29 +197,26 @@ class World {
    * draw stuff
    */
   draw() {
-    this.air.drawAt(this.ctx, 0, 0, this.canvas.width, this.canvas.height);
-    this.healthBar.draw(this.ctx);
-    this.coinBar.draw(this.ctx);
     this.ctx.save();
     this.ctx.translate(-this.camera.x, 0);
-    this.layer1.drawAt(this.ctx, 0, 0, this.canvas.width, this.canvas.height);
-    this.layer1.drawAt(this.ctx, this.canvas.width, 0, this.canvas.width, this.canvas.height);
-    this.layer2.drawAt(this.ctx, 0, 0, this.canvas.width, this.canvas.height);
-    this.layer2.drawAt(this.ctx, this.canvas.width, 0, this.canvas.width, this.canvas.height);
-    this.layer3.drawAt(this.ctx, 0, 0, this.canvas.width, this.canvas.height);
-    this.layer3.drawAt(this.ctx, this.canvas.width, 0, this.canvas.width, this.canvas.height);
+    this.bg1.drawAt(this.ctx, 0, 0, this.canvas.width, this.canvas.height);
+    this.bg2.drawAt(this.ctx, this.canvas.width, 0, this.canvas.width, this.canvas.height);
     this.ctx.restore();
 
     this.ctx.save();
-    this.ctx.translate(0, 0);
+    this.ctx.translate(-this.camera.x * 0.2, 0);
     this.cloudLayer.drawAt(this.ctx, this.cloudX, 0, this.canvas.width, this.canvas.height);
     this.cloudLayer.drawAt(this.ctx, this.cloudX + this.canvas.width, 0, this.canvas.width, this.canvas.height);
     this.ctx.restore();
+
+    this.healthBar.draw(this.ctx);
+    this.coinBar.draw(this.ctx);
 
     this.ctx.save();
     this.ctx.translate(-this.camera.x, 0);
     this.player.draw(this.ctx);
     this.chickens.forEach((ch) => ch.draw(this.ctx));
+    this.middleChickens.forEach((ch) => ch.draw(this.ctx));
     this.coins.forEach((c) => {
       if (!c.collected) c.draw(this.ctx);
     });
@@ -239,7 +240,7 @@ class World {
    */
   _markBgReady() {
     this._bgReadyCount++;
-    if (this._bgReadyCount >= 5) {
+    if (this._bgReadyCount >= 3) {
       this.bgReady = true;
       this.waitUntilReady();
     }
