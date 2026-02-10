@@ -89,36 +89,13 @@ function waitUntilReady() {
 }
 
 /**
- * simple box collision
- * @param {object} a
- * @param {object} b
- * @returns {boolean}
- */
-function isColliding(a, b) {
-  return (
-    a.x < b.x + b.w &&
-    a.x + a.w > b.x &&
-    a.y < b.y + b.h &&
-    a.y + a.h > b.y
-  );
-}
-
-/**
- * check if player hits from above
- * @returns {boolean}
- */
-function isJumpHit(chicken) {
-  return player.vy > 0 && (player.y + player.h) < (chicken.y + chicken.h * 0.6);
-}
-
-/**
  * handle player vs chicken
  */
 function handleChickenHit(chicken) {
   if (chicken.dead) return;
-  if (!isColliding(player, chicken)) return;
+  if (!Collision.hitBox(player, chicken)) return;
 
-  if (isJumpHit(chicken)) {
+  if (Collision.jumpHit(player, chicken)) {
     chicken.die();
     player.vy = -6;
     player.jumping = true;
