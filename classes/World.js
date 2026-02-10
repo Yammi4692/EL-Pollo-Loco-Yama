@@ -74,6 +74,15 @@ class World {
       'img/img/7_statusbars/1_statusbar/2_statusbar_health/green/80.png',
       'img/img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
     ], 20, 20, 180, 50);
+    this.coinCount = 0;
+    this.coinBar = new StatusBar([
+      'img/img/7_statusbars/1_statusbar/1_statusbar_coin/green/0.png',
+      'img/img/7_statusbars/1_statusbar/1_statusbar_coin/green/20.png',
+      'img/img/7_statusbars/1_statusbar/1_statusbar_coin/green/40.png',
+      'img/img/7_statusbars/1_statusbar/1_statusbar_coin/green/60.png',
+      'img/img/7_statusbars/1_statusbar/1_statusbar_coin/green/80.png',
+      'img/img/7_statusbars/1_statusbar/1_statusbar_coin/green/100.png'
+    ], 220, 20, 180, 50);
     this.gameOver = false;
     this.gameOverImg = new Image();
     this.gameOverImg.src = 'img/img/9_intro_outro_screens/game_over/game over.png';
@@ -133,6 +142,8 @@ class World {
     if (coin.collected) return;
     if (!Collision.hitBox(this.player, coin)) return;
     coin.collect();
+    this.coinCount += 20;
+    this.coinBar.set(this.coinCount);
   }
 
   /**
@@ -171,6 +182,7 @@ class World {
   draw() {
     this.bg.draw(this.ctx, this.canvas);
     this.healthBar.draw(this.ctx);
+    this.coinBar.draw(this.ctx);
     this.ctx.save();
     this.ctx.translate(-this.camera.x, 0);
     this.player.draw(this.ctx);
