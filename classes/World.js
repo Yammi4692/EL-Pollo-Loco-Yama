@@ -96,9 +96,11 @@ class World {
       this.player.vy = -6;
       this.player.jumping = true;
     } else {
-      this.player.hurt();
-      this.health -= 20;
-      this.healthBar.set(this.health);
+      if (this.player.hurtCooldown === 0) {
+        this.player.hurt();
+        this.health -= 20;
+        this.healthBar.set(this.health);
+      }
     }
   }
 
