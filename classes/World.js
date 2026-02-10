@@ -70,6 +70,7 @@ class World {
     this.gameOverImg.src = 'img/img/9_intro_outro_screens/game_over/game over.png';
     this.jumpHeld = false;
     this.jumpSound = new Audio('assets/audio/character_jumping.mp3');
+    this.chickenDieSound = new Audio('assets/audio/dying_chicken.mp3');
 
     this.bg.img.onload = () => {
       this.bgReady = true;
@@ -100,6 +101,8 @@ class World {
       chicken.die();
       this.player.vy = -6;
       this.player.jumping = true;
+      this.chickenDieSound.currentTime = 0;
+      this.chickenDieSound.play();
     } else {
       if (this.player.hurtCooldown === 0) {
         this.player.hurt();
