@@ -9,9 +9,11 @@ class World {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.bgReady = false;
+    this._bgReadyCount = 0;
 
-    this.bg = new Background('img/img/5_background/first_half_background.png');
-    this.worldWidth = 2000;
+    this.bg1 = new Background('img/img/5_background/first_half_background.png');
+    this.bg2 = new Background('img/img/5_background/second_half_background.png');
+    this.worldWidth = this.canvas.width * 2;
     this.camera = new Camera();
     this.player = new Player(
       'img/img/2_character_pepe/1_idle/idle/I-1.png',
@@ -93,10 +95,8 @@ class World {
     this.hurtSound = new Audio('assets/audio/pepe_hurting.mp3');
     this.coinSound = new Audio('assets/audio/get_coin.mp3');
 
-    this.bg.img.onload = () => {
-      this.bgReady = true;
-      this.waitUntilReady();
-    };
+    this.bg1.img.onload = () => this._markBgReady();
+    this.bg2.img.onload = () => this._markBgReady();
   }
 
   /**
@@ -184,11 +184,12 @@ class World {
    * draw stuff
    */
   draw() {
-    this.bg.draw(this.ctx, this.canvas);
     this.healthBar.draw(this.ctx);
     this.coinBar.draw(this.ctx);
     this.ctx.save();
     this.ctx.translate(-this.camera.x, 0);
+    this.bg1.drawAt(this.ctx, 0, 0, this.canvas.width, this.canvas.height);
+    this.bg2.drawAt(this.ctx, this.canvas.width, 0, this.canvas.width, this.canvas.height);
     this.player.draw(this.ctx);
     this.chickens.forEach((ch) => ch.draw(this.ctx));
     this.coins.forEach((c) => {
@@ -207,5 +208,16 @@ class World {
     this.update();
     this.draw();
     requestAnimationFrame(() => this.gameLoop());
+  }
+
+  /**
+   * bg ready helper
+   */
+  _markBgReady() {
+    this._bgReadyCount++;
+    if (this._bgReadyCount >= 2) {
+      this.bgReady = true;
+      this.waitUntilReady();
+    }
   }
 }
