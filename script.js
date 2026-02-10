@@ -103,16 +103,23 @@ function isColliding(a, b) {
  * @returns {boolean}
  */
 function isJumpHit() {
-  return false;
+  return player.vy > 0 && (player.y + player.h) < (chicken.y + chicken.h * 0.6);
 }
 
 /**
  * handle player vs chicken
  */
 function handleChickenHit() {
+  if (chicken.dead) return;
   if (!isColliding(player, chicken)) return;
 
-  player.hurt();
+  if (isJumpHit()) {
+    chicken.die();
+    player.vy = -6;
+    player.jumping = true;
+  } else {
+    player.hurt();
+  }
 }
 
 /**
