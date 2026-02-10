@@ -83,6 +83,7 @@ class World {
       'img/img/7_statusbars/1_statusbar/1_statusbar_coin/green/80.png',
       'img/img/7_statusbars/1_statusbar/1_statusbar_coin/green/100.png'
     ], 220, 20, 180, 50);
+    this.coinBar.set(0);
     this.gameOver = false;
     this.gameOverImg = new Image();
     this.gameOverImg.src = 'img/img/9_intro_outro_screens/game_over/game over.png';
