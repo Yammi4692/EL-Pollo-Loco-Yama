@@ -11,6 +11,8 @@ class World {
     this.bgReady = false;
 
     this.bg = new Background('img/img/5_background/first_half_background.png');
+    this.worldWidth = 2000;
+    this.camera = new Camera();
     this.player = new Player(
       'img/img/2_character_pepe/1_idle/idle/I-1.png',
       40, 210, 160, 210
@@ -133,10 +135,15 @@ class World {
     this.player.updateJump();
     this.player.updateHurt();
     this.player.updateIdle(this.input.left || this.input.right || this.player.jumping);
+    if (this.player.x < 0) this.player.x = 0;
+    if (this.player.x > this.worldWidth - this.player.w) {
+      this.player.x = this.worldWidth - this.player.w;
+    }
     this.chickens.forEach((ch) => {
       ch.moveLeft();
       this.handleChickenHit(ch);
     });
+    this.camera.follow(this.player, this.canvas, this.worldWidth);
   }
 
   /**
@@ -145,8 +152,11 @@ class World {
   draw() {
     this.bg.draw(this.ctx, this.canvas);
     this.healthBar.draw(this.ctx);
+    this.ctx.save();
+    this.ctx.translate(-this.camera.x, 0);
     this.player.draw(this.ctx);
     this.chickens.forEach((ch) => ch.draw(this.ctx));
+    this.ctx.restore();
     if (this.gameOver) {
       this.ctx.drawImage(this.gameOverImg, 120, 140, 480, 200);
     }
