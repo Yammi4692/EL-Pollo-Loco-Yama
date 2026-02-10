@@ -126,6 +126,16 @@ class World {
   }
 
   /**
+   * handle player vs coin
+   * @param {Coin} coin
+   */
+  handleCoinHit(coin) {
+    if (coin.collected) return;
+    if (!Collision.hitBox(this.player, coin)) return;
+    coin.collect();
+  }
+
+  /**
    * update every frame
    */
   update() {
@@ -151,6 +161,7 @@ class World {
       this.handleChickenHit(ch);
     });
     this.coins.forEach((c) => c.animate());
+    this.coins.forEach((c) => this.handleCoinHit(c));
     this.camera.follow(this.player, this.canvas, this.worldWidth);
   }
 
