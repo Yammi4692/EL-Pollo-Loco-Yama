@@ -56,6 +56,15 @@ class World {
     ];
 
     this.input = new Input();
+    this.health = 100;
+    this.healthBar = new StatusBar([
+      'img/img/7_statusbars/1_statusbar/2_statusbar_health/green/0.png',
+      'img/img/7_statusbars/1_statusbar/2_statusbar_health/green/20.png',
+      'img/img/7_statusbars/1_statusbar/2_statusbar_health/green/40.png',
+      'img/img/7_statusbars/1_statusbar/2_statusbar_health/green/60.png',
+      'img/img/7_statusbars/1_statusbar/2_statusbar_health/green/80.png',
+      'img/img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
+    ], 20, 20, 180, 50);
 
     this.bg.img.onload = () => {
       this.bgReady = true;
@@ -88,6 +97,8 @@ class World {
       this.player.jumping = true;
     } else {
       this.player.hurt();
+      this.health -= 20;
+      this.healthBar.set(this.health);
     }
   }
 
@@ -113,6 +124,7 @@ class World {
    */
   draw() {
     this.bg.draw(this.ctx, this.canvas);
+    this.healthBar.draw(this.ctx);
     this.player.draw(this.ctx);
     this.chickens.forEach((ch) => ch.draw(this.ctx));
   }
