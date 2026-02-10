@@ -56,6 +56,13 @@ class World {
       new SmallChicken(940, 360),
       new SmallChicken(1180, 360)
     ];
+    this.coins = [
+      new Coin(300, 280),
+      new Coin(520, 240),
+      new Coin(760, 200),
+      new Coin(980, 260),
+      new Coin(1240, 220)
+    ];
 
     this.input = new Input();
     this.health = 100;
@@ -143,6 +150,7 @@ class World {
       ch.moveLeft();
       this.handleChickenHit(ch);
     });
+    this.coins.forEach((c) => c.animate());
     this.camera.follow(this.player, this.canvas, this.worldWidth);
   }
 
@@ -156,6 +164,9 @@ class World {
     this.ctx.translate(-this.camera.x, 0);
     this.player.draw(this.ctx);
     this.chickens.forEach((ch) => ch.draw(this.ctx));
+    this.coins.forEach((c) => {
+      if (!c.collected) c.draw(this.ctx);
+    });
     this.ctx.restore();
     if (this.gameOver) {
       this.ctx.drawImage(this.gameOverImg, 120, 140, 480, 200);
