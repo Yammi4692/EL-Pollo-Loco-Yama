@@ -65,6 +65,9 @@ class World {
       'img/img/7_statusbars/1_statusbar/2_statusbar_health/green/80.png',
       'img/img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
     ], 20, 20, 180, 50);
+    this.gameOver = false;
+    this.gameOverImg = new Image();
+    this.gameOverImg.src = 'img/img/9_intro_outro_screens/game_over/game over.png';
 
     this.bg.img.onload = () => {
       this.bgReady = true;
@@ -100,6 +103,7 @@ class World {
         this.player.hurt();
         this.health -= 20;
         this.healthBar.set(this.health);
+        if (this.health <= 0) this.gameOver = true;
       }
     }
   }
@@ -108,6 +112,7 @@ class World {
    * update every frame
    */
   update() {
+    if (this.gameOver) return;
     if (this.input.right) this.player.moveRight();
     if (this.input.left) this.player.moveLeft();
     if (!this.input.left && !this.input.right && !this.player.jumping) this.player.stopWalk();
@@ -129,6 +134,9 @@ class World {
     this.healthBar.draw(this.ctx);
     this.player.draw(this.ctx);
     this.chickens.forEach((ch) => ch.draw(this.ctx));
+    if (this.gameOver) {
+      this.ctx.drawImage(this.gameOverImg, 120, 140, 480, 200);
+    }
   }
 
   /**
