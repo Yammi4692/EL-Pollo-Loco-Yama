@@ -126,6 +126,15 @@ class World {
     this.coinSound = new Audio('assets/audio/get_coin.mp3');
     this.throwSound = new Audio('assets/audio/bottle_splash.mp3');
     this.getBottleSound = new Audio('assets/audio/get_bottle.mp3');
+    this.playerWalkSound = new Audio('assets/audio/character_walk_on_sand.mp3');
+    this.smallChickenWalkSound = new Audio('assets/audio/small_chicken_walking.mp3');
+    this.middleChickenWalkSound = new Audio('assets/audio/normal_chicken_walking.mp3');
+    this.playerWalkSound.loop = true;
+    this.smallChickenWalkSound.loop = true;
+    this.middleChickenWalkSound.loop = true;
+    this.playerWalkSound.volume = 0.2;
+    this.smallChickenWalkSound.volume = 0.2;
+    this.middleChickenWalkSound.volume = 0.2;
 
     this.bg1.img.onload = () => this._markBgReady();
     this.bg2.img.onload = () => this._markBgReady();
@@ -252,6 +261,28 @@ class World {
     this.camera.follow(this.player, this.canvas, this.worldWidth);
     this.thrownBottles.forEach((b) => b.update());
     this.thrownBottles.forEach((b) => this.handleBottleHitChicken(b));
+    this.updateWalkSounds();
+  }
+
+  /**
+   * handle walk sounds
+   */
+  updateWalkSounds() {
+    const playerMoving = (this.input.left || this.input.right) && !this.player.jumping;
+    this._toggleSound(this.playerWalkSound, playerMoving);
+
+    const smallAlive = this.chickens.some((c) => !c.dead);
+    const middleAlive = this.middleChickens.some((c) => !c.dead);
+    this._toggleSound(this.smallChickenWalkSound, smallAlive);
+    this._toggleSound(this.middleChickenWalkSound, middleAlive);
+  }
+
+  _toggleSound(sound, on) {
+    if (on) {
+      if (sound.paused) sound.play();
+    } else {
+      if (!sound.paused) sound.pause();
+    }
   }
 
   /**
