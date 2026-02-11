@@ -83,6 +83,7 @@ class World {
       new Bottle(1260, 345),
       new Bottle(1420, 335)
     ];
+    this.thrownBottles = [];
 
     this.input = new Input();
     this.health = 100;
@@ -118,10 +119,12 @@ class World {
     this.gameOverImg = new Image();
     this.gameOverImg.src = 'img/img/9_intro_outro_screens/game_over/game over.png';
     this.jumpHeld = false;
+    this.throwHeld = false;
     this.jumpSound = new Audio('assets/audio/character_jumping.mp3');
     this.chickenDieSound = new Audio('assets/audio/dying_chicken.mp3');
     this.hurtSound = new Audio('assets/audio/pepe_hurting.mp3');
     this.coinSound = new Audio('assets/audio/get_coin.mp3');
+    this.throwSound = new Audio('assets/audio/sfx_throw.wav');
 
     this.bg1.img.onload = () => this._markBgReady();
     this.bg2.img.onload = () => this._markBgReady();
@@ -192,6 +195,21 @@ class World {
   }
 
   /**
+   * throw bottle
+   */
+  throwBottle() {
+    if (this.bottleCount <= 0) return;
+    const dir = this.player.facing === 'left' ? -1 : 1;
+    const bx = this.player.x + (dir === 1 ? this.player.w : -20);
+    const by = this.player.y + 40;
+    this.thrownBottles.push(new BottleThrow(bx, by, dir));
+    this.bottleCount -= 20;
+    this.bottleBar.set(this.bottleCount);
+    this.throwSound.currentTime = 0;
+    this.throwSound.play();
+  }
+
+  /**
    * update every frame
    */
   update() {
@@ -205,6 +223,10 @@ class World {
       this.jumpSound.play();
     }
     this.jumpHeld = this.input.jump;
+    if (this.input.throw && !this.throwHeld) {
+      this.throwBottle();
+    }
+    this.throwHeld = this.input.throw;
     this.player.updateJump();
     this.player.updateHurt();
     this.player.updateIdle(this.input.left || this.input.right || this.player.jumping);
@@ -226,6 +248,7 @@ class World {
     this.cloudX -= 0.2;
     if (this.cloudX <= -this.canvas.width) this.cloudX = 0;
     this.camera.follow(this.player, this.canvas, this.worldWidth);
+    this.thrownBottles.forEach((b) => b.update());
   }
 
   /**
@@ -259,6 +282,7 @@ class World {
     this.bottles.forEach((b) => {
       if (!b.collected) b.draw(this.ctx);
     });
+    this.thrownBottles.forEach((b) => b.draw(this.ctx));
     this.ctx.restore();
     if (this.gameOver) {
       this.ctx.drawImage(this.gameOverImg, 120, 140, 480, 200);
