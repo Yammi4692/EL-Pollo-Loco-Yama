@@ -64,6 +64,7 @@ class World {
       new MiddleChicken(620, 330),
       new MiddleChicken(1020, 330)
     ];
+    this.endboss = new Endboss(1200, 150);
     this.coins = [
       new Coin(300, 280),
       new Coin(520, 240),
@@ -330,6 +331,7 @@ class World {
     this.player.draw(this.ctx);
     this.chickens.forEach((ch) => ch.draw(this.ctx));
     this.middleChickens.forEach((ch) => ch.draw(this.ctx));
+    this.endboss.draw(this.ctx);
     this.coins.forEach((c) => {
       if (!c.collected) c.draw(this.ctx);
     });
