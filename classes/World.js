@@ -249,6 +249,7 @@ class World {
     if (this.cloudX <= -this.canvas.width) this.cloudX = 0;
     this.camera.follow(this.player, this.canvas, this.worldWidth);
     this.thrownBottles.forEach((b) => b.update());
+    this.thrownBottles.forEach((b) => this.handleBottleHitChicken(b));
   }
 
   /**
@@ -287,6 +288,21 @@ class World {
     if (this.gameOver) {
       this.ctx.drawImage(this.gameOverImg, 120, 140, 480, 200);
     }
+  }
+
+  /**
+   * bottle vs chicken
+   * @param {BottleThrow} bottle
+   */
+  handleBottleHitChicken(bottle) {
+    this.chickens.forEach((ch) => {
+      if (ch.dead) return;
+      if (Collision.hitBox(bottle, ch)) ch.die();
+    });
+    this.middleChickens.forEach((ch) => {
+      if (ch.dead) return;
+      if (Collision.hitBox(bottle, ch)) ch.die();
+    });
   }
 
   /**
