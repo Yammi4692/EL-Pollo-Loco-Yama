@@ -104,6 +104,16 @@ class World {
       'img/img/7_statusbars/1_statusbar/1_statusbar_coin/green/100.png'
     ], 220, 20, 180, 50);
     this.coinBar.set(0);
+    this.bottleCount = 0;
+    this.bottleBar = new StatusBar([
+      'img/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/0.png',
+      'img/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/20.png',
+      'img/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/40.png',
+      'img/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/60.png',
+      'img/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/80.png',
+      'img/img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png'
+    ], 420, 20, 180, 50);
+    this.bottleBar.set(0);
     this.gameOver = false;
     this.gameOverImg = new Image();
     this.gameOverImg.src = 'img/img/9_intro_outro_screens/game_over/game over.png';
@@ -177,6 +187,8 @@ class World {
     if (bottle.collected) return;
     if (!Collision.hitBox(this.player, bottle)) return;
     bottle.collect();
+    this.bottleCount += 20;
+    this.bottleBar.set(this.bottleCount);
   }
 
   /**
@@ -234,6 +246,7 @@ class World {
 
     this.healthBar.draw(this.ctx);
     this.coinBar.draw(this.ctx);
+    this.bottleBar.draw(this.ctx);
 
     this.ctx.save();
     this.ctx.translate(-this.camera.x, 0);
