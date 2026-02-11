@@ -170,6 +170,16 @@ class World {
   }
 
   /**
+   * handle player vs bottle
+   * @param {Bottle} bottle
+   */
+  handleBottleHit(bottle) {
+    if (bottle.collected) return;
+    if (!Collision.hitBox(this.player, bottle)) return;
+    bottle.collect();
+  }
+
+  /**
    * update every frame
    */
   update() {
@@ -200,6 +210,7 @@ class World {
     });
     this.coins.forEach((c) => c.animate());
     this.coins.forEach((c) => this.handleCoinHit(c));
+    this.bottles.forEach((b) => this.handleBottleHit(b));
     this.cloudX -= 0.2;
     if (this.cloudX <= -this.canvas.width) this.cloudX = 0;
     this.camera.follow(this.player, this.canvas, this.worldWidth);
