@@ -124,7 +124,8 @@ class World {
     this.chickenDieSound = new Audio('assets/audio/dying_chicken.mp3');
     this.hurtSound = new Audio('assets/audio/pepe_hurting.mp3');
     this.coinSound = new Audio('assets/audio/get_coin.mp3');
-    this.throwSound = new Audio('assets/audio/sfx_throw.wav');
+    this.throwSound = new Audio('assets/audio/bottle_splash.mp3');
+    this.getBottleSound = new Audio('assets/audio/get_bottle.mp3');
 
     this.bg1.img.onload = () => this._markBgReady();
     this.bg2.img.onload = () => this._markBgReady();
@@ -190,6 +191,8 @@ class World {
     if (bottle.collected) return;
     if (!Collision.hitBox(this.player, bottle)) return;
     bottle.collect();
+    this.getBottleSound.currentTime = 0;
+    this.getBottleSound.play();
     this.bottleCount += 20;
     this.bottleBar.set(this.bottleCount);
   }
@@ -205,8 +208,7 @@ class World {
     this.thrownBottles.push(new BottleThrow(bx, by, dir));
     this.bottleCount -= 20;
     this.bottleBar.set(this.bottleCount);
-    this.throwSound.currentTime = 0;
-    this.throwSound.play();
+    // sound on impact instead of throw
   }
 
   /**
@@ -297,11 +299,19 @@ class World {
   handleBottleHitChicken(bottle) {
     this.chickens.forEach((ch) => {
       if (ch.dead) return;
-      if (Collision.hitBox(bottle, ch)) ch.die();
+      if (Collision.hitBox(bottle, ch)) {
+        ch.die();
+        this.throwSound.currentTime = 0;
+        this.throwSound.play();
+      }
     });
     this.middleChickens.forEach((ch) => {
       if (ch.dead) return;
-      if (Collision.hitBox(bottle, ch)) ch.die();
+      if (Collision.hitBox(bottle, ch)) {
+        ch.die();
+        this.throwSound.currentTime = 0;
+        this.throwSound.play();
+      }
     });
   }
 
