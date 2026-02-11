@@ -71,6 +71,11 @@ class World {
       new Coin(980, 260),
       new Coin(1240, 220)
     ];
+    this.bottles = [
+      new Bottle(430, 360),
+      new Bottle(860, 360),
+      new Bottle(1260, 360)
+    ];
 
     this.input = new Input();
     this.health = 100;
@@ -219,6 +224,9 @@ class World {
     this.middleChickens.forEach((ch) => ch.draw(this.ctx));
     this.coins.forEach((c) => {
       if (!c.collected) c.draw(this.ctx);
+    });
+    this.bottles.forEach((b) => {
+      if (!b.collected) b.draw(this.ctx);
     });
     this.ctx.restore();
     if (this.gameOver) {
