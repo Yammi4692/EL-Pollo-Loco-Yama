@@ -73,8 +73,15 @@ class World {
     ];
     this.bottles = [
       new Bottle(430, 345),
+      new Bottle(560, 330),
+      new Bottle(620, 345),
+      new Bottle(760, 325),
       new Bottle(860, 345),
-      new Bottle(1260, 345)
+      new Bottle(990, 335),
+      new Bottle(1040, 345),
+      new Bottle(1160, 330),
+      new Bottle(1260, 345),
+      new Bottle(1420, 335)
     ];
 
     this.input = new Input();
