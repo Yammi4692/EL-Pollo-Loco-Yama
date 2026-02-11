@@ -72,9 +72,9 @@ class World {
       new Coin(1240, 220)
     ];
     this.bottles = [
-      new Bottle(430, 360),
-      new Bottle(860, 360),
-      new Bottle(1260, 360)
+      new Bottle(430, 345),
+      new Bottle(860, 345),
+      new Bottle(1260, 345)
     ];
 
     this.input = new Input();
