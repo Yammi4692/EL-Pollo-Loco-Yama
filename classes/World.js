@@ -126,6 +126,10 @@ class World {
     this.coinSound = new Audio('assets/audio/get_coin.mp3');
     this.throwSound = new Audio('assets/audio/bottle_splash.mp3');
     this.getBottleSound = new Audio('assets/audio/get_bottle.mp3');
+    this.playerDeadSound = new Audio('assets/audio/pepe_dying.mp3');
+    this.snoreSound = new Audio('assets/audio/pepe_snoring.mp3');
+    this.snoreSound.loop = true;
+    this.snoreSound.volume = 0.2;
     this.playerWalkSound = new Audio('assets/audio/character_walk_on_sand.mp3');
     this.smallChickenWalkSound = new Audio('assets/audio/small_chicken_walking.mp3');
     this.middleChickenWalkSound = new Audio('assets/audio/normal_chicken_walking.mp3');
@@ -135,6 +139,7 @@ class World {
     this.playerWalkSound.volume = 0.2;
     this.smallChickenWalkSound.volume = 0.2;
     this.middleChickenWalkSound.volume = 0.2;
+    this.playerDeadPlayed = false;
 
     this.bg1.img.onload = () => this._markBgReady();
     this.bg2.img.onload = () => this._markBgReady();
@@ -173,7 +178,14 @@ class World {
         this.hurtSound.play();
         this.health -= 20;
         this.healthBar.set(this.health);
-        if (this.health <= 0) this.gameOver = true;
+        if (this.health <= 0) {
+          this.gameOver = true;
+          if (!this.playerDeadPlayed) {
+            this.playerDeadPlayed = true;
+            this.playerDeadSound.currentTime = 0;
+            this.playerDeadSound.play();
+          }
+        }
       }
     }
   }
@@ -262,6 +274,7 @@ class World {
     this.thrownBottles.forEach((b) => b.update());
     this.thrownBottles.forEach((b) => this.handleBottleHitChicken(b));
     this.updateWalkSounds();
+    this.updateSleepSound();
   }
 
   /**
@@ -283,6 +296,13 @@ class World {
     } else {
       if (!sound.paused) sound.pause();
     }
+  }
+
+  /**
+   * handle sleep sound
+   */
+  updateSleepSound() {
+    this._toggleSound(this.snoreSound, this.player.isSleeping);
   }
 
   /**
